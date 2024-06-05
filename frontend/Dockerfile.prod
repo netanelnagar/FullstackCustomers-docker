@@ -1,0 +1,32 @@
+# --------------------- build-stage------#
+# node with olpine os
+FROM node:18-alpine3.16 AS build-stage
+
+# set up the working directory
+WORKDIR /tmp
+
+#copy only package*.json (now i dont know why)
+COPY package*.json /tmp
+
+# copy files from this project to the working directory in image
+COPY . /tmp
+
+# ENV VITE_SOME_KEY='http://localhost:5000/api'
+
+RUN npm i
+
+# run command
+RUN npm run build
+
+
+
+# --------------------- prod-stage------#
+# node with olpine os
+FROM nginx:1.22-alpine AS prod-stage
+
+
+# copy files js from build-stag to the working directory in image
+COPY --from=build-stage /tmp/dist /usr/share/nginx/html
+
+
+ENTRYPOINT nginx -g "daemon off;"

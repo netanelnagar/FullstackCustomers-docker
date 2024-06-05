@@ -1,0 +1,81 @@
+
+
+services:
+  # database-service:
+  #   image: database-image
+  #   build: ./database
+  #   container_name: database-container
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   ports:
+  #     - 3307:3306
+  #   environment:
+  #     - MYSQL_HOST=localhost
+  #     - MYSQL_DATABASE=sample_2
+  #     - MYSQL_USER=nati
+  #     - MYSQL_PASSWORD=nati1234
+  #     - MYSQL_ROOT_PASSWORD=nati1234
+  #   restart: unless-stopped
+  #   volumes:
+  #     - database_volume:/var/lib/mysql
+
+  # # ----------------------------------------------------------------
+
+  # backend-service:
+  #   image: backend-image
+  #   build: ./backend
+  #   container_name: backend-container
+  #   ports:
+  #     - 5000:3001
+  #   environment:
+  #     - PORT=3001
+  #     - MYSQL_HOST=database-service
+  #     - MYSQL_DATABASE=sample_2
+  #     - MYSQL_USER=nati
+  #     - MYSQL_PASSWORD=nati1234
+  #   restart: unless-stopped
+  #   volumes: 
+  #     - ./backend:/app
+  #   depends_on:
+  #     - database-service
+
+
+  # # ------------------------------------------#
+  # php-admin-db:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin-container
+  #   ports:
+  #     - 8080:80
+  #   environment:
+  #     - PMA_HOST=database-service
+  #   links:
+  #     - database-service
+  #   depends_on:
+  #     - database-service
+  #   restart: unless-stopped
+    
+  #-------------------------------------------------------------#
+
+
+  frontend-service:
+
+      image: frontend-image
+
+      build: ./frontend
+
+      container_name: frontend-container
+
+      ports:
+        - 5173:5173
+
+      # depends_on:
+      #   - database-service
+      #   - backend-service
+
+      volumes:
+        - ./frontend:/app
+      restart: unless-stopped
+
+
+
+volumes:
+  database_volume:

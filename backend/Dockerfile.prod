@@ -1,0 +1,39 @@
+# --------------------- build-stage------#
+# node with olpine os
+FROM node:18-alpine3.16 AS build-stage
+
+# global installation 
+RUN npm i -g typescript
+
+# set up the working directory
+WORKDIR /tmp
+
+#copy only package*.json (now i dont know why)
+COPY package*.json /tmp
+
+# copy files from this project to the working directory in image
+COPY . /tmp
+
+# run command
+RUN npm i
+
+RUN tsc
+
+
+# --------------------- prod-stage------#
+# node with olpine os
+FROM node:18-alpine3.16 AS prod-stage
+
+# set up the working directory
+WORKDIR /app
+
+#copy only package*.json (now i dont know why)
+COPY --from=build-stage /tmp/package*.json /app
+
+# copy files js from build-stag to the working directory in image
+COPY --from=build-stage /tmp/dist /app
+
+# run command
+RUN npm i --only=prod
+
+ENTRYPOINT node /app/src/app.js
