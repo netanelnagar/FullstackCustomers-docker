@@ -3,6 +3,7 @@ import { Welcome } from "../Welcome/Welcome";
 import { Customers } from "../Pages/Customers/Customers";
 import { Products } from "../Pages/Products/Products";
 
+
 export function Routing(): JSX.Element {
     return (
         <>

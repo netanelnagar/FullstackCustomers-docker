@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import router from "./6-controllers/customer-controller";
 import routeNotFound from "./3-middleware/route-not-found";
 import catchAll from "./3-middleware/catch-all";
@@ -7,6 +8,7 @@ import catchAll from "./3-middleware/catch-all";
 const server = express();  
 
 server.use(express.json());
+server.use(cors());
 
 
 server.use('/api', router)
