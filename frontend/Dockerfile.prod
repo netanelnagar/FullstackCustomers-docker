@@ -27,6 +27,6 @@ FROM nginx:1.22-alpine AS prod-stage
 
 # copy files js from build-stag to the working directory in image
 COPY --from=build-stage /tmp/dist /usr/share/nginx/html
-
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 ENTRYPOINT nginx -g "daemon off;"
